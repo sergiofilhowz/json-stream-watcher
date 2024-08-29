@@ -10,6 +10,7 @@ const createBigArrayObject = (size: number) => {
       description: faker.lorem.paragraph(),
     })
   }
+
   return arr
 }
 

@@ -1,3 +1,10 @@
 {
-  "prettier.configPath": ".prettierrc"
+  "prettier.configPath": ".prettierrc",
+  "eslint.workingDirectories": [
+    "src/**/*.{ts,js}"
+  ],
+  "eslint.options": {
+    "overrideConfigFile": ".eslintrc.js"
+  },
+  "typescript.preferences.importModuleSpecifier": "relative"
 }

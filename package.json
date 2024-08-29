@@ -1,12 +1,17 @@
 {
   "name": "json-stream-watcher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Process and Watch JSON Stream",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "publish:prepare": "npm run build && ts-node prepare.ts"
+    "publish:prepare": "npm run build && ts-node prepare.ts",
+    "lint": "eslint \"src/**/*.{ts,js}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergiofilhowz/json-stream-watcher"
   },
   "keywords": [
     "json",
