@@ -1,5 +1,8 @@
 # JSON Stream Watcher
 
+[![codecov](https://codecov.io/github/sergiofilhowz/json-stream-watcher/graph/badge.svg?token=U2FYIPBBNE)](https://codecov.io/github/sergiofilhowz/json-stream-watcher)
+![github action](https://github.com/sergiofilhowz/json-stream-watcher/actions/workflows/main.yml/badge.svg)
+
 This library helps streaming JSON in chunks and processes incoming properties in real time. You don't need to wait until the full JSON string is sent to start processing the output.
 
 ## Why JSON Stream Watcher?
