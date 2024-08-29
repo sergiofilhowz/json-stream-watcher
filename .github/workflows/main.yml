@@ -23,7 +23,7 @@ jobs:
       - name: Test
         run: npm test
       - name: Package
-        run: npm run build package
+        run: npm run build
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v4
         with:
