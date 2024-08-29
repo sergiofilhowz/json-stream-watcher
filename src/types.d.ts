@@ -27,3 +27,6 @@ type NestedArray<ArrayItem> =
     : ArrayItem extends object
       ? `[${ArrayIndex}].${NestedKeys<ArrayItem>}` | `[${ArrayIndex}]`
       : `[${ArrayIndex}]`
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Observer = (prop: any) => void

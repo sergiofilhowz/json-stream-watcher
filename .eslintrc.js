@@ -24,18 +24,11 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['src/domain/repositories/types/**/*.ts'],
+      files: ['src/**/*.test.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 0,
-        'padding-line-between-statements': 0,
-      },
-    },
-    {
-      files: ['./jest.d.ts'],
-      rules: {
-        '@typescript-eslint/no-explicit-any': 0,
-        '@typescript-eslint/no-empty-interface': 0,
-        '@typescript-eslint/no-unused-vars': 0,
+        '@typescript-eslint/no-empty-function': 0,
+        '@typescript-eslint/ban-types': 0,
       },
     },
   ],

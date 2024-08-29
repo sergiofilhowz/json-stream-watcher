@@ -16,6 +16,8 @@ describe('JSON Stream', () => {
     stream.close()
 
     expect(checkName).toHaveBeenCalledTimes(1)
+
+    expect(stream.object()).toEqual({ name: 'Alice', age: 30 })
   })
 
   it('Type Definition', () => {

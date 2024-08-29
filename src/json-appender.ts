@@ -2,6 +2,7 @@ type JsonElement = {
   key: string
   isCreatingKey?: boolean
   type?: 'object' | 'array' | 'string' | 'number' | 'boolean' | 'null'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any
 }
 
@@ -101,6 +102,7 @@ export class JsonAppender {
 
       if (currentElement.type === 'boolean') {
         currentElement.value += char
+
         if (char === 'e') {
           currentElement.value = currentElement.value === 'true'
           onComplete(currentElement)
@@ -111,6 +113,7 @@ export class JsonAppender {
 
       if (currentElement.type === 'null') {
         currentElement.value += char
+
         if (currentElement.value === 'null') {
           currentElement.value = null
           onComplete(currentElement)
