@@ -1,10 +1,12 @@
 import { JsonAppender } from './json-appender'
-import { NestedKeys, Observer } from './types'
+import { NestedKeys, Observer, OnPropertyOptions } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class JSONStream<T = any> {
   private appender: JsonAppender
+  private partialObservers: { [path: string]: Observer[] } = {}
   private propertyObservers: { [path: string]: Observer[] } = {}
+  private partialObserversCount: { value: number } = { value: 0 }
   private isClosed: boolean
 
   constructor() {
@@ -13,9 +15,15 @@ export class JSONStream<T = any> {
     this.isClosed = false
   }
 
-  onProperty(path: NestedKeys<T>, callback: Observer): this {
+  onProperty(path: NestedKeys<T>, callback: Observer, options: OnPropertyOptions = {}): this {
     this.propertyObservers[path] = this.propertyObservers[path] || []
     this.propertyObservers[path].push(callback)
+
+    if (options.partial) {
+      this.partialObservers[path] = this.partialObservers[path] || []
+      this.partialObservers[path].push(callback)
+      this.partialObserversCount.value++
+    }
 
     return this
   }
@@ -37,13 +45,32 @@ export class JSONStream<T = any> {
       if (observers) {
         // once we use the observer, we remove it from the list for performance reasons
         delete this.propertyObservers[key]
+
+        if (this.partialObservers[key]) {
+          delete this.partialObservers[key]
+          this.partialObserversCount.value--
+        }
       }
 
       if (key.includes('[')) {
         observers.push(...(this.propertyObservers[key.replace(/\[\d+\]/, '[*]')] ?? []))
       }
 
-      observers.forEach((observer) => observer(value))
+      observers.forEach((observer) => observer(value, false))
+    }
+
+    if (this.partialObserversCount.value === 0) {
+      return
+    }
+
+    const partial = this.appender.stack.filter(({ isCreatingKey }) => !isCreatingKey)
+
+    for (const { key, value } of partial) {
+      const observers = this.partialObservers[key] ?? []
+
+      if (observers) {
+        observers.forEach((observer) => observer(value, true))
+      }
     }
   }
 

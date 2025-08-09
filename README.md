@@ -56,6 +56,35 @@ for await (const chunk of openAiStream) {
 }
 ```
 
+## Watching properties partially
+
+You can watch partial properties by passing the `partial` option to the `onProperty` method.
+
+```typescript
+// Second argument is a boolean that indicates if the property is being sent partially or not
+const onReasoning = (reasoning: string, isPartial: boolean) => {
+  if (isPartial) {
+    console.log('Reasoning is being sent:', reasoning)
+  } else {
+    console.log('Reasoning was sent:', reasoning)
+  }
+}
+
+stream.onProperty('reasoning', onReasoning, { partial: true })
+
+// example of process to write JSON to stream
+const openAiStream = await client.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [{ role: 'user', content: 'Say this is a test' }],
+  stream: true,
+  // function call
+})
+
+for await (const chunk of openAiStream) {
+  stream.write(chunk.choices[0]?.delta?.content || '')
+}
+```
+
 ## Benchmarks
 
 Performance is not the top priority here, since this project was made to reduce wait time of minutes from OpenAI API to seconds. But there's one test case that processes 240kb JSON split in thousands of chunks.

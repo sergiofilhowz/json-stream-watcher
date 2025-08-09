@@ -29,4 +29,8 @@ type NestedArray<ArrayItem> =
       : `[${ArrayIndex}]`
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Observer = (prop: any) => void
+export type Observer = (prop: any, isPartial: boolean) => void
+
+export type OnPropertyOptions = {
+  partial?: boolean
+}

@@ -20,6 +20,38 @@ describe('JSON Stream', () => {
     expect(stream.object()).toEqual({ name: 'Alice', age: 30 })
   })
 
+  it('should stream partially correctly', () => {
+    let count = 0
+    const stream = new JSONStream<{ name: string; age: number }>()
+    const checkName = jest.fn((prop: string, isPartial: boolean) => {
+      if (count++ === 0) {
+        expect(prop).toBe('Al')
+        expect(isPartial).toBe(true)
+      } else {
+        expect(prop).toBe('Alice')
+        expect(isPartial).toBe(false)
+      }
+    })
+
+    stream.onProperty('name', checkName, { partial: true })
+
+    stream.write('{"name')
+    expect(checkName).toHaveBeenCalledTimes(0)
+    stream.write('":"Al')
+    expect(checkName).toHaveBeenCalledTimes(1)
+
+    stream.write('ice"')
+    expect(checkName).toHaveBeenCalledTimes(2)
+    stream.write(',"age":30')
+    expect(checkName).toHaveBeenCalledTimes(2)
+    stream.write('}')
+    stream.close()
+
+    expect(checkName).toHaveBeenCalledTimes(2)
+
+    expect(stream.object()).toEqual({ name: 'Alice', age: 30 })
+  })
+
   it('Type Definition', () => {
     const onProp = jest.fn(() => {})
 
