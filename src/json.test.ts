@@ -1,12 +1,12 @@
-import faker from 'faker'
+import { faker } from '@faker-js/faker'
 import { JSONStream } from './json-stream'
 
 const createBigArrayObject = (size: number) => {
   const arr = []
   for (let i = 0; i < size; i++) {
     arr.push({
-      name: faker.name.firstName(),
-      age: faker.datatype.number({ min: 10, max: 70 }),
+      name: faker.person.firstName(),
+      age: faker.number.int({ min: 10, max: 70 }),
       description: faker.lorem.paragraph(),
     })
   }
@@ -25,7 +25,7 @@ describe('JSONStream performance', () => {
     let index = 0
 
     while (index < bigJson.length) {
-      const chunkSize = faker.datatype.number({ min: 10, max: 100 })
+      const chunkSize = faker.number.int({ min: 10, max: 100 })
       const chunk = bigJson.slice(index, index + chunkSize)
       chunks.push(chunk)
       index += chunkSize
